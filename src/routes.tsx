@@ -6,8 +6,8 @@ import { VenueDetailPage } from "./pages/VenueDetailPage";
 import { LoginPage } from "./pages/LoginPage";
 import { RegisterPage } from "./pages/RegisterPage";
 import { ProfilePage } from "./pages/ProfilePage";
-import { DashboardPage } from "./pages/DashboardPage";
-
+import { CreateVenuePage } from "./pages/CreateVenuePage";
+import { EditVenuePage } from "./pages/EditVenuePage";
 import { NotFoundPage } from "./pages/NotFoundPage";
 
 export const router = createBrowserRouter([
@@ -21,7 +21,8 @@ export const router = createBrowserRouter([
       { path: "/login", element: <LoginPage /> },
       { path: "/register", element: <RegisterPage /> },
       { path: "/profile", element: <ProfilePage /> },
-      { path: "/dashboard", element: <DashboardPage /> },
+      { path: "/create-venue", element: <CreateVenuePage /> },
+      { path: "/edit-venue/:id", element: <EditVenuePage /> },
       { path: "*", element: <NotFoundPage /> },
     ],
   },
