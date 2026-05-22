@@ -1,8 +1,8 @@
 import { BASE_API_URL } from "./api";
 
-export async function getVenues() {
+export async function getVenues(page = 1, limit = 24) {
   const response = await fetch(
-    `${BASE_API_URL}/holidaze/venues?_owner=true&_bookings=true`,
+    `${BASE_API_URL}/holidaze/venues?_owner=true&_bookings=true&page=${page}&limit=${limit}&sort=created&order=desc`,
   );
 
   if (!response.ok) {
@@ -18,10 +18,5 @@ export async function getVenues() {
   const venuesArray = json.data || [];
   const totalCount = json.meta?.totalCount || venuesArray.length;
 
-  const sortedVenues = [...venuesArray].sort(
-    (a: any, b: any) =>
-      new Date(b.created).getTime() - new Date(a.created).getTime(),
-  );
-
-  return { venues: sortedVenues, totalCount };
+  return { venues: venuesArray, totalCount };
 }
