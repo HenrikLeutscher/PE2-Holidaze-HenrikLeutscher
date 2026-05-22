@@ -1,63 +1,155 @@
 import { NavLink } from "react-router-dom";
-import { House, Compass, User, LogIn, LogOut, SquarePen } from "lucide-react";
+import {
+  House,
+  Compass,
+  User,
+  LogIn,
+  LogOut,
+  SquarePen,
+  Menu,
+  UserPlus,
+} from "lucide-react";
 import { useAuth } from "../context/useAuth";
+import { useState } from "react";
 
 export function Header() {
   const { user, logout, token } = useAuth();
   const userLoggedIn = Boolean(user || token);
   const venueManager = user?.venueManager;
+  const [dropDownOpen, setDropdownOpen] = useState(false);
 
   return (
     <header className="bg-primary flex w-full items-center justify-between py-6 text-white">
-      <div className="flex justify-between container mx-auto">
+      <div className="flex justify-between container mx-auto items-center">
         <div>
           <NavLink to={"/"}>
             <img
-              src="/src/assets/logo/holidaze.png"
+              src="../../src/assets/logo/holidaze.png"
               alt="Holidaze Logo"
-              className="w-50"
+              className="w-[10vw] min-w-30"
             />
           </NavLink>
         </div>
-        <div className="flex gap-5">
+        {/* Desktop Navigation */}
+        <div className="hidden md:flex gap-5">
           <NavLink to={"/"} className="flex items-center">
             <House />
-            <span>Home</span>
+            <span className="text-bodytext">Home</span>
           </NavLink>
           <NavLink to={"venues"} className="flex items-center">
             <Compass />
-            <span>Venues</span>
+            <span className="text-bodytext">Venues</span>
           </NavLink>
         </div>
-        <div className="flex gap-5">
+        <div className="hidden md:flex gap-5">
           {userLoggedIn ? (
             <>
-              {!venueManager && (
+              {venueManager && (
                 <NavLink to={"/create-venue"} className="flex items-center">
                   <SquarePen />
-                  <span>Create Venue</span>
+                  <span className="text-bodytext">Create Venue</span>
                 </NavLink>
               )}
               <NavLink to={"profile"} className="flex items-center">
                 <User />
-                <span>Profile</span>
+                <span className="text-bodytext">Profile</span>
               </NavLink>
 
               <button className="flex items-center" onClick={logout}>
                 <LogOut />
-                <span>Log Out</span>
+                <span className="text-bodytext">Log Out</span>
               </button>
             </>
           ) : (
             <>
               <NavLink to={"login"} className="flex items-center">
                 <LogIn />
-                <span>Log In</span>
+                <span className="text-bodytext">Log In</span>
               </NavLink>
               <NavLink to={"register"} className="flex items-center">
-                <span>Register</span>
+                <UserPlus />
+                <span className="text-bodytext">Register</span>
               </NavLink>
             </>
+          )}
+        </div>
+        {/* Mobile Navigation */}
+        <div className="md:hidden">
+          <Menu
+            className="w-10 h-10"
+            onClick={() => setDropdownOpen(!dropDownOpen)}
+          />
+          {dropDownOpen && (
+            <div className="absolute w-full right-0 top-20 bg-primary rounded shadow-lg p-4 flex flex-col gap-3 z-100">
+              <NavLink
+                to={"/"}
+                className="flex items-center"
+                onClick={() => setDropdownOpen(false)}
+              >
+                <House />
+                <span className="text-bodytext">Home</span>
+              </NavLink>
+              <NavLink
+                to={"venues"}
+                className="flex items-center"
+                onClick={() => setDropdownOpen(false)}
+              >
+                <Compass />
+                <span className="text-bodytext">Venues</span>
+              </NavLink>
+              {!userLoggedIn && (
+                <>
+                  <NavLink
+                    to={"login"}
+                    className="flex items-center"
+                    onClick={() => setDropdownOpen(false)}
+                  >
+                    <LogIn />
+                    <span className="text-bodytext">Log In</span>
+                  </NavLink>
+                  <NavLink
+                    to={"register"}
+                    className="flex items-center"
+                    onClick={() => setDropdownOpen(false)}
+                  >
+                    <UserPlus />
+                    <span className="text-bodytext">Register</span>
+                  </NavLink>
+                </>
+              )}
+              {userLoggedIn && (
+                <div className="border-y-2 border-gray-300 py-2">
+                  {venueManager && (
+                    <NavLink
+                      to={"/create-venue"}
+                      className="flex items-center"
+                      onClick={() => setDropdownOpen(false)}
+                    >
+                      <SquarePen />
+                      <span className="text-bodytext">Create Venue</span>
+                    </NavLink>
+                  )}
+                  <NavLink
+                    to={"profile"}
+                    className="flex items-center"
+                    onClick={() => setDropdownOpen(false)}
+                  >
+                    <User />
+                    <span className="text-bodytext">Profile</span>
+                  </NavLink>
+                  <button
+                    className="flex items-center"
+                    onClick={() => {
+                      logout();
+                      setDropdownOpen(false);
+                    }}
+                  >
+                    <LogOut />
+                    <span className="text-bodytext">Log Out</span>
+                  </button>
+                </div>
+              )}
+            </div>
           )}
         </div>
       </div>
