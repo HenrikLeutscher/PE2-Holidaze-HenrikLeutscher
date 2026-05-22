@@ -6,13 +6,13 @@ export function Footer() {
       <div className="flex justify-center mb-2">
         <NavLink to={"/"}>
           <img
-            src="/src/assets/logo/holidaze.png"
+            src="../../src/assets/logo/holidaze.png"
             alt="Holidaze Logo"
-            className="w-50"
+            className="w-[30vw] min-w-30"
           />
         </NavLink>
       </div>
-      <p>@ 2026 Holidaze. All rights reserved.</p>
+      <p className="text-header3">@ 2026 Holidaze. All rights reserved.</p>
     </footer>
   );
 }
