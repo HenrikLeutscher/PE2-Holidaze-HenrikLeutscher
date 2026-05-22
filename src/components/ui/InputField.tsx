@@ -12,7 +12,7 @@ export const InputField: React.FC<InputFieldProps> = ({
 }) => {
   return (
     <div className="mb-4">
-      <label htmlFor={name} className="block text-sm font-bold text-gray-700">
+      <label htmlFor={name} className="block text-inputlabel">
         {label}
       </label>
       <input
@@ -23,7 +23,7 @@ export const InputField: React.FC<InputFieldProps> = ({
         onChange={onChange}
         placeholder={placeholder}
         required={required}
-        className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 px-2"
+        className="input"
       />
     </div>
   );

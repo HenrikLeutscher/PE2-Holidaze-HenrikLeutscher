@@ -2,7 +2,7 @@ import React from "react";
 
 interface ButtonProps {
   text: string;
-  onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
   type?: "button" | "submit" | "reset";
   disabled?: boolean;
   className?: string;
@@ -26,10 +26,10 @@ export const Button: React.FC<ButtonProps> = ({
       type={type}
       onClick={onClick}
       disabled={disabled || loading}
-      className={`${!loading && !error ? "btn-primary" : ""}
+      className={` ${!loading && !error ? "btn-primary" : ""}
             ${loading ? "btn-loading" : ""}
             ${error ? "btn-error" : ""}
-            ${className}`}
+            ${className} text-bodytext`}
     >
       {loading && "Loading..."}
       {error && "Error"}
