@@ -28,7 +28,7 @@ export function PopupMessage({
 
   return (
     <div
-      className={`absolute top-25 right-4 ${bgColor} text-white px-6 py-4 rounded shadow-lg text-bodytext`}
+      className={`fixed bottom-4 right-4 ${bgColor} text-white px-6 py-4 rounded shadow-lg text-bodytext z-50`}
     >
       {message}
     </div>

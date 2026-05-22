@@ -1,14 +1,7 @@
 import { BASE_API_URL } from "./api";
+import type { BookingPayLoad } from "../types/BookingProps";
 
-export async function createBooking(
-  formData: {
-    dateFrom: string;
-    dateTo: string;
-    guests: number;
-    venueId: string;
-  },
-  token: string,
-) {
+export async function createBooking(formData: BookingPayLoad, token: string) {
   try {
     const response = await fetch(`${BASE_API_URL}/holidaze/bookings`, {
       method: "POST",
@@ -21,20 +14,23 @@ export async function createBooking(
     });
 
     const data = await response.json();
-    console.log("createBooking response:", response.status, data);
 
     if (
       (response.status === 200 || response.status === 201) &&
       data?.data?.id
     ) {
-      return data.data; // Return created booking data
-    } else {
-      throw new Error(
-        "Failed to create booking: " + (data?.message || "Unknown error"),
-      );
+      return data.data;
     }
+
+    let message =
+      data?.errors?.[0]?.message || data?.message || "Unknown error";
+
+    if (message.toLowerCase().includes("overlap")) {
+      message = "Selected dates overlap with an existing booking.";
+    }
+
+    throw new Error(message);
   } catch (error: any) {
-    console.error("Error in createBooking:", error);
-    throw error;
+    throw new Error(error.message || "Failed to create booking");
   }
 }

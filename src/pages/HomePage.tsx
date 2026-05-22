@@ -38,7 +38,7 @@ export function HomePage() {
 
   return (
     <div className="main-section py-20">
-      <div className="border-y py-2">
+      <div className="border-y py-2 px-3">
         <div className="flex flex-col md:flex-row items-center justify-between py-3 gap-5">
           <h1 className="text-header1">Latest Venues</h1>
           <Button
@@ -55,7 +55,7 @@ export function HomePage() {
           ))}
         </div>
       </div>
-      <div className="border-y py-2">
+      <div className="border-y py-2 px-3">
         <div className="flex flex-col md:flex-row items-center justify-between py-3 gap-5">
           <h1 className="text-header1">Top Venues</h1>
           <Button

@@ -85,7 +85,9 @@ export function RegisterPage() {
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(
-          errorData.message || `Registration failed: ${response.status}`,
+          errorData?.errors?.[0]?.message ||
+            errorData?.message ||
+            `Registration failed: ${response.status}`,
         );
       }
 
@@ -189,7 +191,7 @@ export function RegisterPage() {
             loading={loading}
           />
           {error && (
-            <p className="text-red-500 text-center mt-2 text-bodytext">
+            <p className="bg-red-500 text-white text-center py-2 my-2 rounded-2xl">
               {error}
             </p>
           )}
@@ -207,7 +209,7 @@ export function RegisterPage() {
       </div>
       {showPopup && (
         <PopupMessage
-          message="Successfully logged in, redirecting..."
+          message="Successfully registered, redirecting..."
           type="success"
           onComplete={() => setShowPopup(false)}
         />

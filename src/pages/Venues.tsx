@@ -4,12 +4,10 @@ import { VenueCard } from "../components/VenueCard";
 import { SearchBar } from "../components/SearchBar";
 import { Loading } from "../components/ui/Loading";
 import { Pagination } from "../components/Pagination";
-import { Venue } from "../types/venue";
-import { BASE_API_URL } from "../api/api";
+import type { Venue } from "../types/venue";
 
 export function VenuesPage() {
   const [venues, setVenues] = useState<Venue[]>([]);
-  const [filteredVenues, setFilteredVenues] = useState<Venue[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
@@ -28,14 +26,7 @@ export function VenuesPage() {
       })
       .catch((err) => setError(err.message || "Failed to load venues"))
       .finally(() => setIsLoading(false));
-  }, [currentPage, itemsPerPage]);
-
-  useEffect(() => {
-    const filtered = venues.filter((venue) =>
-      venue.name.toLowerCase().includes(searchQuery.toLowerCase()),
-    );
-    setFilteredVenues(filtered);
-  }, [searchQuery, venues]);
+  }, [currentPage]);
 
   if (isLoading) return <Loading />;
   if (error)
@@ -45,7 +36,7 @@ export function VenuesPage() {
     <div className="pt-5">
       <h2 className="text-center text-2xl font-bold">Venues</h2>
       <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
-      <p>
+      <p className="text-center text-small">
         Page {currentPage} of {totalPages}
       </p>
 

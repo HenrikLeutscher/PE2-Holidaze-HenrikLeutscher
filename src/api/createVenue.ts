@@ -1,6 +1,7 @@
 import { BASE_API_URL } from "./api";
+import type { Venue } from "../types/venue";
 
-export async function createVenue(formData: any, token: string) {
+export async function createVenue(formData: Venue, token: string) {
   try {
     const response = await fetch(`${BASE_API_URL}/holidaze/venues`, {
       method: "POST",
@@ -14,19 +15,17 @@ export async function createVenue(formData: any, token: string) {
 
     const data = await response.json();
 
-    console.log("createVenue response:", response.status, data);
-
     if (
       (response.status === 200 || response.status === 201) &&
       data?.data?.id
     ) {
-      alert("Venue created successfully!");
-    } else {
-      alert("Failed to create venue: " + (data?.message || "Unknown error"));
-      return null;
+      return data.data; // Return created venue data
     }
-  } catch (error: any) {
-    alert("Failed to create venue: " + error.message);
-    return null;
+
+    throw new Error(
+      data?.errors?.[0]?.message || data?.message || "Unknown error",
+    );
+  } catch (error) {
+    throw error;
   }
 }

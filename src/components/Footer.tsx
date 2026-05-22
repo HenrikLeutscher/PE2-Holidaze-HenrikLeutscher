@@ -8,7 +8,7 @@ export function Footer() {
           <img
             src="../../src/assets/logo/holidaze.png"
             alt="Holidaze Logo"
-            className="w-[30vw] min-w-30"
+            className="w-[15vw] min-w-30"
           />
         </NavLink>
       </div>

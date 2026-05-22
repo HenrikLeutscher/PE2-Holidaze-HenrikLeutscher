@@ -37,30 +37,32 @@ export function BasicVenueFields({
       <label className="font-semibold text-gray-700">Images</label>
       {formData.media.map((media, index) => (
         <div key={index} className="flex gap-2 my-4 items-center">
-          <InputField
-            name={`mediaUrl${index}`}
-            label={`Image URL ${index + 1}`}
-            type="text"
-            value={media.url}
-            onChange={(e) => {
-              const newMedia = [...formData.media];
-              newMedia[index].url = e.target.value;
-              setFormData({ ...formData, media: newMedia });
-            }}
-            placeholder="Enter venue media URL"
-          />
-          <InputField
-            name={`mediaAlt${index}`}
-            label={`Image ALT ${index + 1}`}
-            type="text"
-            value={media.alt}
-            onChange={(e) => {
-              const newMedia = [...formData.media];
-              newMedia[index].alt = sanitizeInput(e.target.value);
-              setFormData({ ...formData, media: newMedia });
-            }}
-            placeholder="Enter media ALT text"
-          />
+          <div className="flex flex-col sm:flex-row gap-5">
+            <InputField
+              name={`mediaUrl${index}`}
+              label={`Image URL ${index + 1}`}
+              type="text"
+              value={media.url}
+              onChange={(e) => {
+                const newMedia = [...formData.media];
+                newMedia[index].url = e.target.value;
+                setFormData({ ...formData, media: newMedia });
+              }}
+              placeholder="Enter venue media URL"
+            />
+            <InputField
+              name={`mediaAlt${index}`}
+              label={`Image ALT ${index + 1}`}
+              type="text"
+              value={media.alt}
+              onChange={(e) => {
+                const newMedia = [...formData.media];
+                newMedia[index].alt = sanitizeInput(e.target.value);
+                setFormData({ ...formData, media: newMedia });
+              }}
+              placeholder="Enter media ALT text"
+            />
+          </div>
           <button
             type="button"
             className="text-red-500 font-bold mt-2"

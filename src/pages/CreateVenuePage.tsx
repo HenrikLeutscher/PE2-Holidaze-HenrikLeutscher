@@ -9,13 +9,18 @@ import { MetaFields } from "../components/createVenueForm/MetaFields";
 import { createVenue } from "../api/createVenue";
 import { invalidInput } from "../helpers/sanitizeInput";
 import { useNavigate } from "react-router-dom";
+import { PopupMessage } from "../components/ui/PopupMessage";
+import { getErrorMessages } from "../helpers/getErrorMessages";
 
 export function CreateVenuePage() {
   const { user, token } = useAuth();
   const [isLoading, setIsLoading] = useState(true);
-  const [isDisabled, setIsDisabled] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [popup, setPopup] = useState<{
+    message: string;
+    type: "success" | "error";
+  } | null>(null);
   const [formData, setFormData] = useState({
     name: "",
     description: "",
@@ -75,12 +80,12 @@ export function CreateVenuePage() {
       return;
     }
 
-    if (!formData.price || formData.price <= 0) {
+    if (!formData.price) {
       setError("Price must be greater than zero.");
       return;
     }
 
-    if (!formData.maxGuests || formData.maxGuests <= 0) {
+    if (!formData.maxGuests) {
       setError("Max Guests must be greater than zero.");
       return;
     }
@@ -139,39 +144,28 @@ export function CreateVenuePage() {
     };
 
     try {
-      const createdVenue: any = await createVenue(formDataPayload, token);
+      const createdVenue = await createVenue(formDataPayload, token);
 
-      alert("Venue created successfully!");
-      navigate(`/venue/${createdVenue.id}`);
-
-      setFormData({
-        name: "",
-        description: "",
-        media: [{ url: "", alt: "" }],
-        price: 0,
-        maxGuests: 0,
-        rating: 0,
-        meta: { wifi: false, parking: false, breakfast: false, pets: false },
-        location: {
-          address: "",
-          city: "",
-          zip: "",
-          country: "",
-          continent: "",
-          lat: 0,
-          lng: 0,
-        },
+      setPopup({
+        message: "Venue created successfully!",
+        type: "success",
       });
-    } catch (error: any) {
-      setError(error.message);
-      alert("Failed to create venue: " + error.message);
+
+      setTimeout(() => {
+        navigate(`/venue/${createdVenue.id}`);
+      }, 2000);
+    } catch (error) {
+      setPopup({
+        message: getErrorMessages(error),
+        type: "error",
+      });
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="container py-10 my-auto w-200 mx-auto">
+    <div className="container py-10 px-5 md:px-0 my-auto max-w-200 mx-auto overflow-x-hidden">
       <h1 className="text-header1 mb-6 text-center">Create a New Venue</h1>
       <form>
         <BasicVenueFields
@@ -199,10 +193,17 @@ export function CreateVenuePage() {
           type="button"
           className="flex mx-auto"
           onClick={handleCreateVenue}
-          disabled={isDisabled || loading}
+          disabled={loading}
           loading={loading}
         />
       </form>
+      {popup && (
+        <PopupMessage
+          message={popup.message}
+          type={popup.type}
+          onComplete={() => setPopup(null)}
+        />
+      )}
     </div>
   );
 }

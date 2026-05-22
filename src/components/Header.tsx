@@ -98,7 +98,7 @@ export function Header() {
                 <span className="text-bodytext">Venues</span>
               </NavLink>
               {!userLoggedIn && (
-                <>
+                <div className="border-y-2 border-gray-300 py-2 gap-3 flex flex-col">
                   <NavLink
                     to={"login"}
                     className="flex items-center"
@@ -115,10 +115,10 @@ export function Header() {
                     <UserPlus />
                     <span className="text-bodytext">Register</span>
                   </NavLink>
-                </>
+                </div>
               )}
               {userLoggedIn && (
-                <div className="border-y-2 border-gray-300 py-2">
+                <div className="border-y-2 border-gray-300 py-2 gap-5 flex flex-col">
                   {venueManager && (
                     <NavLink
                       to={"/create-venue"}

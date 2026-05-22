@@ -14,6 +14,7 @@ import { createBooking } from "../api/createBooking";
 import { AlertModal } from "../components/ui/AlertModal";
 import { PopupMessage } from "../components/ui/PopupMessage";
 import { formatCreatedDate } from "../helpers/formatCreatedDate";
+import { getErrorMessages } from "../helpers/getErrorMessages";
 
 export function VenueDetailPage() {
   const { id } = useParams();
@@ -25,6 +26,7 @@ export function VenueDetailPage() {
   const [popup, setPopup] = useState<{
     message: string;
     type: "success" | "error";
+    onComplete?: () => void;
   } | null>(null);
   const [selectedDates, setSelectedDates] = useState<{
     start: Date | null;
@@ -49,7 +51,6 @@ export function VenueDetailPage() {
         setVenue(fetchedVenue);
         document.title = `${fetchedVenue.name} | Holidaze`;
       } catch (error) {
-        console.error("Error fetching venue details:", error);
       } finally {
         setIsLoading(false);
       }
@@ -69,22 +70,31 @@ export function VenueDetailPage() {
 
   const handleBooking = async () => {
     if (!token || !venue) {
-      alert("Please ensure you are logged in.");
+      setPopup({
+        message: "Please ensure you are logged in.",
+        type: "error",
+      });
       return;
     }
     if (!selectedDates.start || !selectedDates.end) {
-      alert("Please select a date range.");
+      setPopup({
+        message: "Please select a date range.",
+        type: "error",
+      });
       return;
     }
 
     if (guests < 1 || guests > venue.maxGuests) {
-      alert(
-        `This venue can accommodate between 1 and ${venue.maxGuests} guests. Please adjust the number of guests accordingly.`,
-      );
+      setPopup({
+        message: `This venue can accommodate between 1 and ${venue.maxGuests} guests. Please adjust the number of guests accordingly.`,
+        type: "error",
+      });
       return;
     }
 
     const { start, end } = selectedDates;
+
+    setIsDisabled(true);
 
     try {
       await createBooking(
@@ -103,37 +113,57 @@ export function VenueDetailPage() {
       });
       setSelectedDates({ start: null, end: null });
     } catch (error) {
-      console.error("Error creating booking:", error);
       setPopup({
-        message: "Failed to create booking.",
+        message: getErrorMessages(error),
         type: "error",
       });
+    } finally {
+      setIsDisabled(false);
     }
   };
 
   const handleDeleteVenue = async () => {
     if (venue.owner?.name !== user?.name) {
-      alert("You can only delete your own Venues");
+      setPopup({
+        message: "You can only delete your own Venues",
+        type: "error",
+      });
       return;
     }
 
     if (!token) {
-      alert("You must be logged in to delete a venue.");
+      setPopup({
+        message: "You must be logged in to delete a venue.",
+        type: "error",
+      });
       return;
     }
 
     setShowDeleteModal(true);
+    setTimeout(() => {
+      navigate("/venues");
+    }, 2000);
   };
 
   const confirmDelete = async () => {
+    setIsDisabled(true);
     setShowDeleteModal(false);
 
     if (!venue || !token) return;
 
-    const success = await deleteVenue(venue.id, token);
-    if (success) {
-      setVenue(null);
-      navigate("/venues");
+    try {
+      await deleteVenue(venue.id, token);
+      setPopup({
+        message: "Venue deleted successfully!",
+        type: "success",
+      });
+    } catch (error) {
+      setPopup({
+        message: getErrorMessages(error),
+        type: "error",
+      });
+    } finally {
+      setIsDisabled(false);
     }
   };
 
@@ -201,7 +231,7 @@ export function VenueDetailPage() {
                 className="btn-primary w-full"
                 onClick={handleBooking}
                 disabled={isDisabled}
-                loading={isLoading}
+                loading={isDisabled}
               />
             </>
           )}
@@ -216,17 +246,15 @@ export function VenueDetailPage() {
                 text="Edit Venue"
                 type="button"
                 className="btn-edit w-full"
-                onClick={() => navigate(`/edit-venue/${venue.id}`)}
                 disabled={isDisabled}
-                loading={isLoading}
+                onClick={() => navigate(`/edit-venue/${venue.id}`)}
               />
               <Button
                 text="Delete Venue"
                 type="button"
                 className="btn-delete w-full"
                 onClick={handleDeleteVenue}
-                disabled={isDisabled || isLoading}
-                loading={isLoading}
+                disabled={isDisabled}
               />
             </>
           )}
@@ -242,6 +270,7 @@ export function VenueDetailPage() {
               message={popup.message}
               type={popup.type}
               onComplete={() => setPopup(null)}
+              duration={3000}
             />
           )}
         </div>

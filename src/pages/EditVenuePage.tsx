@@ -10,6 +10,7 @@ import { invalidInput } from "../helpers/sanitizeInput";
 import { useNavigate } from "react-router-dom";
 import { getSingleVenue } from "../api/getSingleVenue";
 import { editVenue } from "../api/editVenue";
+import { PopupMessage } from "../components/ui/PopupMessage";
 
 export function EditVenuePage() {
   const { id } = useParams();
@@ -18,6 +19,7 @@ export function EditVenuePage() {
   const [isDisabled, setIsDisabled] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [showPopup, setShowPopup] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     description: "",
@@ -203,30 +205,13 @@ export function EditVenuePage() {
     try {
       const editedVenue: any = await editVenue(id, formDataPayload, token);
 
-      alert("Venue edited successfully!");
-      navigate(`/venue/${editedVenue.id}`);
+      setShowPopup(true);
 
-      setFormData({
-        name: "",
-        description: "",
-        media: [{ url: "", alt: "" }],
-        price: 0,
-        maxGuests: 0,
-        rating: 0,
-        meta: { wifi: false, parking: false, breakfast: false, pets: false },
-        location: {
-          address: "",
-          city: "",
-          zip: "",
-          country: "",
-          continent: "",
-          lat: 0,
-          lng: 0,
-        },
-      });
+      setTimeout(() => {
+        navigate(`/venue/${editedVenue.id}`);
+      }, 2000);
     } catch (error: any) {
       setError(error.message);
-      alert("Failed to edit venue: " + error.message);
     } finally {
       setLoading(false);
       setIsDisabled(false);
@@ -234,7 +219,7 @@ export function EditVenuePage() {
   };
 
   return (
-    <div className="container py-10 my-auto w-200 mx-auto">
+    <div className="container py-10 px-5 md:px-0 my-auto max-w-200 mx-auto overflow-x-hidden">
       <h1 className="text-header1 mb-6 text-center">Edit Venue</h1>
       <form>
         <BasicVenueFields
@@ -266,6 +251,13 @@ export function EditVenuePage() {
           loading={loading}
         />
       </form>
+      {showPopup && (
+        <PopupMessage
+          message="Venue successfully edited!"
+          type="success"
+          onComplete={() => setShowPopup(false)}
+        />
+      )}
     </div>
   );
 }

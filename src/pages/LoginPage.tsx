@@ -25,6 +25,7 @@ export function LoginPage() {
     e.preventDefault();
     setLoading(true);
     setIsDisabled(true);
+
     try {
       await login(formData);
       setPopup({ message: "Successfully logged in", type: "success" });
@@ -46,7 +47,7 @@ export function LoginPage() {
       </div>
       <h1 className="text-center text-header1">Login</h1>
       <div className="flex flex-col gap-4 shadow-xl p-5 rounded-lg w-full">
-        <form className="flex flex-col gap-2">
+        <form className="flex flex-col gap-2" onSubmit={handleLogin}>
           <InputField
             label="Email"
             type="email"
@@ -71,8 +72,7 @@ export function LoginPage() {
           />
           <Button
             text="Login"
-            type="button"
-            onClick={handleLogin}
+            type="submit"
             disabled={isDisabled}
             loading={loading}
           />

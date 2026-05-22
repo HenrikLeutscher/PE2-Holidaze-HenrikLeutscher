@@ -65,7 +65,7 @@ export function VenueImageDetail({ venue }: { venue: any }) {
       )}
 
       {/* Thumbnails */}
-      {images.length && (
+      {images.length > 1 && (
         <div className="flex gap-2 overflow-x-auto pt-2">
           {images.map((img: any, index: number) => (
             <img
