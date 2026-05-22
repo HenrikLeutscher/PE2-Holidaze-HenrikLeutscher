@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { getSingleVenue } from "../api/getSingleVenue";
-import { Navigate, useParams } from "react-router-dom";
+import { Navigate, useParams, useNavigate } from "react-router-dom";
 import type { Venue } from "../types/venue";
 import { VenueImageDetail } from "../components/VenueImage";
 import { Loading } from "../components/ui/Loading";
@@ -8,17 +8,20 @@ import { getFacilities } from "../helpers/getFacilities";
 import { Button } from "../components/ui/Button";
 import { useAuth } from "../context/useAuth";
 import { deleteVenue } from "../api/deleteVenue";
-import { useNavigate } from "react-router-dom";
 import { Availability } from "../components/venueDetailPage/availability";
 import { createBooking } from "../api/createBooking";
 import { AlertModal } from "../components/ui/AlertModal";
 import { PopupMessage } from "../components/ui/PopupMessage";
 import { formatCreatedDate } from "../helpers/formatCreatedDate";
 import { getErrorMessages } from "../helpers/getErrorMessages";
+import { getVenueBookings } from "../api/getVenueBookings";
+import type { Booking } from "../types/booking";
 
 export function VenueDetailPage() {
   const { id } = useParams();
   const { user, token } = useAuth();
+  const navigate = useNavigate();
+
   const [venue, setVenue] = useState<Venue | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isDisabled, setIsDisabled] = useState(false);
@@ -31,12 +34,9 @@ export function VenueDetailPage() {
   const [selectedDates, setSelectedDates] = useState<{
     start: Date | null;
     end: Date | null;
-  }>({
-    start: null,
-    end: null,
-  });
+  }>({ start: null, end: null });
   const [guests, setGuests] = useState(1);
-  const navigate = useNavigate();
+
   useEffect(() => {
     if (!id) {
       setIsLoading(false);
@@ -51,6 +51,7 @@ export function VenueDetailPage() {
         setVenue(fetchedVenue);
         document.title = `${fetchedVenue.name} | Holidaze`;
       } catch (error) {
+        console.error("Error fetching venue details:", error);
       } finally {
         setIsLoading(false);
       }
@@ -58,32 +59,19 @@ export function VenueDetailPage() {
     fetchVenue();
   }, [id]);
 
-  if (isLoading) {
-    return <Loading />;
-  }
-
-  if (!venue) {
-    return <Navigate to="/NotFoundPage" />;
-  }
-
+  if (isLoading) return <Loading />;
+  if (!venue) return <Navigate to="/NotFoundPage" />;
   document.title = `${venue?.name || "Venue Details"} | Holidaze`;
 
   const handleBooking = async () => {
     if (!token || !venue) {
-      setPopup({
-        message: "Please ensure you are logged in.",
-        type: "error",
-      });
+      setPopup({ message: "Please ensure you are logged in.", type: "error" });
       return;
     }
     if (!selectedDates.start || !selectedDates.end) {
-      setPopup({
-        message: "Please select a date range.",
-        type: "error",
-      });
+      setPopup({ message: "Please select a date range.", type: "error" });
       return;
     }
-
     if (guests < 1 || guests > venue.maxGuests) {
       setPopup({
         message: `This venue can accommodate between 1 and ${venue.maxGuests} guests. Please adjust the number of guests accordingly.`,
@@ -94,8 +82,23 @@ export function VenueDetailPage() {
 
     const { start, end } = selectedDates;
 
-    setIsDisabled(true);
+    const existingBookings = await getVenueBookings(venue.id);
+    const hasBookingOverlap = existingBookings.some((booking: Booking) => {
+      const bookingStart = new Date(booking.dateFrom).getTime();
+      const bookingEnd = new Date(booking.dateTo).getTime();
+      return start.getTime() < bookingEnd && end.getTime() > bookingStart;
+    });
 
+    if (hasBookingOverlap) {
+      setPopup({
+        message:
+          "The selected dates overlap with an existing booking. Please choose different dates.",
+        type: "error",
+      });
+      return;
+    }
+
+    setIsDisabled(true);
     try {
       await createBooking(
         {
@@ -106,17 +109,10 @@ export function VenueDetailPage() {
         },
         token,
       );
-
-      setPopup({
-        message: "Booking successful!",
-        type: "success",
-      });
+      setPopup({ message: "Booking successful!", type: "success" });
       setSelectedDates({ start: null, end: null });
     } catch (error) {
-      setPopup({
-        message: getErrorMessages(error),
-        type: "error",
-      });
+      setPopup({ message: getErrorMessages(error), type: "error" });
     } finally {
       setIsDisabled(false);
     }
@@ -130,7 +126,6 @@ export function VenueDetailPage() {
       });
       return;
     }
-
     if (!token) {
       setPopup({
         message: "You must be logged in to delete a venue.",
@@ -138,30 +133,19 @@ export function VenueDetailPage() {
       });
       return;
     }
-
     setShowDeleteModal(true);
-    setTimeout(() => {
-      navigate("/venues");
-    }, 2000);
   };
 
   const confirmDelete = async () => {
     setIsDisabled(true);
     setShowDeleteModal(false);
-
     if (!venue || !token) return;
 
     try {
       await deleteVenue(venue.id, token);
-      setPopup({
-        message: "Venue deleted successfully!",
-        type: "success",
-      });
+      setPopup({ message: "Venue deleted successfully!", type: "success" });
     } catch (error) {
-      setPopup({
-        message: getErrorMessages(error),
-        type: "error",
-      });
+      setPopup({ message: getErrorMessages(error), type: "error" });
     } finally {
       setIsDisabled(false);
     }
@@ -170,14 +154,13 @@ export function VenueDetailPage() {
   return (
     <div className="p-6 w-full md:w-2/3 mx-auto shadow-2xl rounded-xl my-5">
       <VenueImageDetail venue={venue} />
-
       <div className="flex flex-col md:flex-row mt-6 gap-8">
         {/* Left column */}
         <div className="flex-1 flex flex-col gap-6 text-left">
           <h1 className="text-3xl font-bold">{venue.name}</h1>
           <p className="text-gray-500 italic">
             {venue.location.city ? venue.location.city + ", " : ""}
-            {venue.location.country} - Hosted by{` `}
+            {venue.location.country} - Hosted by{" "}
             {venue.owner?.name ?? "Unknown"}
           </p>
           <div className="flex gap-4 flex-wrap">
@@ -188,9 +171,7 @@ export function VenueDetailPage() {
               Updated: {formatCreatedDate(venue.updated)}
             </p>
           </div>
-
           <p className="text-gray-700">{venue.description}</p>
-
           <div className="flex gap-4 flex-wrap">
             {getFacilities(venue.meta)}
           </div>
@@ -203,7 +184,8 @@ export function VenueDetailPage() {
           </p>
           <p className="text-2xl font-bold">{venue.price} / night</p>
           <p className="text-gray-700 text-center">
-            Max Guest Capacity:<br></br> {venue.maxGuests}
+            Max Guest Capacity:
+            <br /> {venue.maxGuests}
           </p>
           <Availability
             venueId={venue.id}
