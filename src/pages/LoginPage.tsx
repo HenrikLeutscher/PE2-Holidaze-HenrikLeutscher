@@ -40,12 +40,12 @@ export function LoginPage() {
   };
 
   return (
-    <div className="mx-auto w-full max-w-100 my-auto container flex flex-col gap-5">
+    <div className="mx-auto w-100 my-auto container flex flex-col gap-5">
       <div className="bg-primary p-4 rounded-full w-17 h-17 mx-auto">
         <LogIn className="w-10 h-auto text-white" />
       </div>
-      <h1 className="text-center text-header1">Login</h1>
-      <div className="flex flex-col gap-4 shadow-xl p-5 rounded-lg w-full">
+      <h1 className="text-center font-bold text-2xl">Login</h1>
+      <div className="flex flex-col gap-4 shadow-xl p-5 rounded-lg w-100">
         <form className="flex flex-col gap-2">
           <InputField
             label="Email"
@@ -76,7 +76,7 @@ export function LoginPage() {
             disabled={isDisabled}
             loading={loading}
           />
-          <p className="text-center text-bodytext">
+          <p className="text-center">
             Don't have an account?{" "}
             <Link to="/register" className="text-primary hover:underline">
               Register here

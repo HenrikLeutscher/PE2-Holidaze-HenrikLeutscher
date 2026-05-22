@@ -109,12 +109,12 @@ export function RegisterPage() {
   };
 
   return (
-    <div className="mx-auto w-full max-w-100 my-auto container justify-center items-center flex flex-col gap-5 min-h-screen">
+    <div className="mx-auto w-100 my-auto container justify-center items-center flex flex-col gap-5">
       <div className="bg-primary p-4 rounded-full">
         <UserRoundPlus className="w-10 h-auto text-white" />
       </div>
-      <h1 className="text-center text-header1">Create an account</h1>
-      <div className="flex flex-col gap-4 shadow-xl p-5 rounded-lg w-full">
+      <h1 className="text-center font-bold text-2xl">Create an account</h1>
+      <div className="flex flex-col gap-4 shadow-xl p-5 rounded-lg w-100">
         <form className="flex flex-col gap-2" onSubmit={handleRegister}>
           <div className="flex flex-col">
             <InputField
@@ -188,18 +188,11 @@ export function RegisterPage() {
             disabled={loading || isDisabled}
             loading={loading}
           />
-          {error && (
-            <p className="text-red-500 text-center mt-2 text-bodytext">
-              {error}
-            </p>
-          )}
+          {error && <p className="text-red-500 text-center mt-2">{error}</p>}
 
-          <p className="text-center text-bodytext">
+          <p className="text-center">
             Already have an account?{" "}
-            <Link
-              to="/login"
-              className="text-blue-500 hover:underline text-bodytext"
-            >
+            <Link to="/login" className="text-blue-500 hover:underline">
               Login here
             </Link>
           </p>
