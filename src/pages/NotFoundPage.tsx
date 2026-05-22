@@ -1,10 +1,14 @@
+import { useEffect } from "react";
 import { NavLink } from "react-router";
 
 export function NotFoundPage() {
+  useEffect(() => {
+    document.title = "404 Not Found | Holidaze";
+  }, []);
   return (
-    <div className="bg-gray-200 text-center h-screen flex items-center justify-center flex-col gap-4">
+    <div className="shadow-2xl text-center h-screen flex items-center justify-center flex-col gap-4">
       <p className="text-red-500 font-bold">
-        404 - The page you are looking for does not exist.
+        404 - The page you are looking for does not exist or has been removed.
       </p>
       <NavLink
         to="/"
