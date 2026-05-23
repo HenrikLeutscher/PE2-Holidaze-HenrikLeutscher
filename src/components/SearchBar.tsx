@@ -60,8 +60,9 @@ export function SearchBar({ searchQuery, setSearchQuery }: searchBarProps) {
   }, []);
 
   return (
-    <div className="relative w-1/3 mx-auto" ref={dropdownRef}>
+    <div className="relative w-1/2 mx-auto" ref={dropdownRef}>
       <input
+        id="search-input"
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
         placeholder="Search venues..."

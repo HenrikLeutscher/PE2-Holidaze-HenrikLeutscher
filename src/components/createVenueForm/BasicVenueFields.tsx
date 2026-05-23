@@ -17,24 +17,33 @@ export function BasicVenueFields({
           setFormData({ ...formData, name: sanitizeInput(e.target.value) })
         }
         placeholder="Enter venue name"
+        autoComplete="off"
         required
       />
-      <InputField
-        label="Venue Description *"
-        type="text"
-        name="description"
-        value={formData.description}
-        onChange={(e) =>
-          setFormData({
-            ...formData,
-            description: sanitizeInput(e.target.value),
-          })
-        }
-        placeholder="Enter venue description"
-        required
-      />
+      <div className="mb-4">
+        <label htmlFor="description" className="block text-inputlabel">
+          Venue Description *
+        </label>
+
+        <textarea
+          id="description"
+          name="description"
+          value={formData.description}
+          onChange={(e) =>
+            setFormData({
+              ...formData,
+              description: sanitizeInput(e.target.value),
+            })
+          }
+          placeholder="Enter venue description"
+          autoComplete="off"
+          required
+          rows={5}
+          className="input min-h-32 resize-y"
+        />
+      </div>
       {/* Multiple Media Inputs */}
-      <label className="font-semibold text-gray-700">Images</label>
+      <h3 className="font-semibold text-gray-700">Images</h3>
       {formData.media.map((media, index) => (
         <div key={index} className="flex gap-2 my-4 items-center">
           <div className="flex flex-col sm:flex-row gap-5">

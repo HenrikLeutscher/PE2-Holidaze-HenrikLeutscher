@@ -4,7 +4,7 @@ import { InputField } from "../ui/InputField";
 export function VenueLocation({ formData, setFormData }: VenueLocationProps) {
   return (
     <div className="mb-4">
-      <label className="font-semibold mb-2 block">Location</label>
+      <h3 className="font-semibold mb-2 block">Location</h3>
       <InputField
         label="Address"
         type="text"
@@ -17,6 +17,7 @@ export function VenueLocation({ formData, setFormData }: VenueLocationProps) {
           })
         }
         placeholder="123 Main St"
+        autoComplete="off"
       />
       <InputField
         label="City"
@@ -30,6 +31,7 @@ export function VenueLocation({ formData, setFormData }: VenueLocationProps) {
           })
         }
         placeholder="Oslo"
+        autoComplete="off"
       />
       <InputField
         label="Zip"
@@ -56,6 +58,7 @@ export function VenueLocation({ formData, setFormData }: VenueLocationProps) {
           })
         }
         placeholder="Norway"
+        autoComplete="off"
       />
       <InputField
         label="Continent"
@@ -69,6 +72,7 @@ export function VenueLocation({ formData, setFormData }: VenueLocationProps) {
           })
         }
         placeholder="Europe"
+        autoComplete="off"
       />
     </div>
   );

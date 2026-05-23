@@ -21,7 +21,7 @@ export function Availability({ venueId, onSelectDates }: AvailabilityProps) {
   useEffect(() => {
     const fetchBookings = async () => {
       try {
-        const venueBookings = await getVenueBookings(venueId, token);
+        const venueBookings = await getVenueBookings(venueId, token as string);
         setBookings(venueBookings);
       } catch (err) {
         console.error("Error fetching bookings:", err);

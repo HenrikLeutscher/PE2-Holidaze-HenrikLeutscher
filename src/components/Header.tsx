@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { useNavigate, NavLink } from "react-router-dom";
 import holidazeLogo from "../assets/logo/holidaze.png";
 import {
   House,
@@ -18,6 +18,13 @@ export function Header() {
   const userLoggedIn = Boolean(user || token);
   const venueManager = user?.venueManager;
   const [dropDownOpen, setDropdownOpen] = useState(false);
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    setDropdownOpen(false);
+    navigate("/");
+  };
 
   return (
     <header className="bg-primary flex w-full items-center justify-between py-6 text-white">
@@ -56,7 +63,7 @@ export function Header() {
                 <span className="text-bodytext">Profile</span>
               </NavLink>
 
-              <button className="flex items-center" onClick={logout}>
+              <button className="flex items-center" onClick={handleLogout}>
                 <LogOut />
                 <span className="text-bodytext">Log Out</span>
               </button>
@@ -141,8 +148,7 @@ export function Header() {
                   <button
                     className="flex items-center"
                     onClick={() => {
-                      logout();
-                      setDropdownOpen(false);
+                      handleLogout();
                     }}
                   >
                     <LogOut />

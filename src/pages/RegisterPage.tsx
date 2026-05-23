@@ -128,6 +128,7 @@ export function RegisterPage() {
                 setFormData({ ...formData, displayName: e.target.value })
               }
               placeholder="Enter your display name"
+              autoComplete="off"
               required
             />
           </div>
@@ -141,6 +142,7 @@ export function RegisterPage() {
                 setFormData({ ...formData, email: e.target.value })
               }
               placeholder="example@stud.noroff.no"
+              autoComplete="email"
               required
             />
           </div>
@@ -154,6 +156,7 @@ export function RegisterPage() {
                 setFormData({ ...formData, password: e.target.value })
               }
               placeholder="Enter your password (Min 8 characters)"
+              autoComplete="off"
               required
             />
           </div>
@@ -167,6 +170,7 @@ export function RegisterPage() {
                 setFormData({ ...formData, confirmPassword: e.target.value })
               }
               placeholder="Confirm your password"
+              autoComplete="off"
               required
             />
           </div>

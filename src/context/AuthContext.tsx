@@ -2,7 +2,6 @@ import { createContext, useState } from "react";
 import type { AuthContextType, Login } from "../types/authContext";
 import { Profile } from "../types/profile";
 import { loginReq } from "../api/login";
-import { Navigate } from "react-router-dom";
 
 export const AuthContext = createContext<AuthContextType | null>(null);
 

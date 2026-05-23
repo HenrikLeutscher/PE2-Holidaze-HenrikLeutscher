@@ -1,7 +1,7 @@
 import { BASE_API_URL } from "./api";
-import type { Venue } from "../types/venue";
+import type { Venue, VenueInput } from "../types/venue";
 
-export async function createVenue(formData: Venue, token: string) {
+export async function createVenue(formData: VenueInput, token: string) {
   try {
     const response = await fetch(`${BASE_API_URL}/holidaze/venues`, {
       method: "POST",

@@ -11,7 +11,7 @@ export function getFacilities(meta: Record<string, boolean>) {
   ];
 
   return (
-    <div className="flex flex-wrap gap-4">
+    <div className="flex flex-wrap gap-4 py-2">
       {facilities.map(({ key, Icon, label }) => (
         <div key={key} className="flex flex-col items-center gap-1">
           <Icon

@@ -11,7 +11,7 @@ export function VenueCard({ venue }: { venue: Venue }) {
         <VenueImage venue={venue} className="h-44 md:h-60" />
         <VenueLocation venue={venue} />
       </div>
-      <div className="flex flex-col gap-2 px-5">
+      <div className="flex flex-col gap-2 px-5 border-x border-b rounded-b-2xl border-primary pt-3">
         <div className="flex flex-row justify-between">
           <h3 className="flex-1 line-clamp-1 text-header3">{venue.name}</h3>
           {venue.rating > 0 ? (

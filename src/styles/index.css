@@ -45,27 +45,53 @@
     }
 
     .text-header1 {
-        @apply text-[32px] font-bold;
-    }
-
-    .text-header2 {
         @apply text-[24px] font-bold;
     }
 
+    .text-header2 {
+        @apply text-[20px] font-bold;
+    }
+
     .text-header3 {
-        @apply text-[18px] font-semibold;
+        @apply text-[16px] font-semibold;
     }
 
     .text-bodytext {
-        @apply text-[16px] font-normal;
-    }
-
-    .text-small {
         @apply text-[14px] font-normal;
     }
 
+    .text-small {
+        @apply text-[12px] font-normal;
+    }
+
     .text-inputlabel {
-        @apply text-[16px] font-bold text-gray-700;
+        @apply text-[14px] font-bold text-gray-700;
+    }
+
+    @media (min-width: 768px) {
+        .text-header1 {
+            @apply text-[32px];
+        }
+
+        .text-header2 {
+            @apply text-[24px];
+        }
+
+        .text-header3 {
+            @apply text-[18px];
+        }
+
+        .text-bodytext {
+            @apply text-[16px];
+        }
+
+        .text-small {
+            @apply text-[14px];
+        }
+
+        .text-inputlabel {
+            @apply text-[16px];
+        }
     }
 
     /* Buttons */

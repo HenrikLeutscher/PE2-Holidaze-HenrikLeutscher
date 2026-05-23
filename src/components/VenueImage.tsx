@@ -52,14 +52,14 @@ export function VenueImageDetail({ venue }: { venue: any }) {
     <div className="w-full flex flex-col gap-4">
       {/* Main image */}
       {showFallback ? (
-        <div className="bg-gray-200 h-80 w-full flex items-center justify-center text-5xl font-bold rounded">
+        <div className="bg-gray-200 h-80 w-full flex items-center justify-center text-imgplaceholder font-bold rounded">
           {venue.name?.charAt(0).toUpperCase()}
         </div>
       ) : (
         <img
           src={mainImage}
           alt={images[mainIndex]?.alt || "Venue image"}
-          className="w-full h-80 object-cover rounded"
+          className="w-full md:h-75 lg:h-100 object-cover rounded"
           onError={() => setHasError(true)}
         />
       )}
@@ -72,7 +72,7 @@ export function VenueImageDetail({ venue }: { venue: any }) {
               key={index}
               src={img.url}
               alt={img.alt || `Thumbnail ${index + 1}`}
-              className={`h-20 w-20 object-cover rounded cursor-pointer border-2 ${
+              className={`h-10 w-10 md:h-15 md:w-15 lg:h-20 lg:w-20 object-cover rounded cursor-pointer border-2 ${
                 index === mainIndex ? "border-blue-500" : "border-transparent"
               }`}
               onClick={() => setMainIndex(index)}

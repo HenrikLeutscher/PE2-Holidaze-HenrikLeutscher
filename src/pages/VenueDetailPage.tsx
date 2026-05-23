@@ -134,6 +134,9 @@ export function VenueDetailPage() {
       return;
     }
     setShowDeleteModal(true);
+    setTimeout(() => {
+      navigate("/venues");
+    }, 2000);
   };
 
   const confirmDelete = async () => {
@@ -152,19 +155,19 @@ export function VenueDetailPage() {
   };
 
   return (
-    <div className="p-6 w-full md:w-2/3 mx-auto shadow-2xl rounded-xl my-5">
+    <div className="p-6 w-[90%] mx-auto shadow-2xl rounded-xl my-5">
       <VenueImageDetail venue={venue} />
       <div className="flex flex-col md:flex-row mt-6 gap-8">
         {/* Left column */}
         <div className="flex-1 flex flex-col gap-6 text-left">
-          <h1 className="text-3xl font-bold">{venue.name}</h1>
+          <h1 className="text-header1 font-bold">{venue.name}</h1>
           <p className="text-gray-500 italic">
             {venue.location.city ? venue.location.city + ", " : ""}
             {venue.location.country} - Hosted by{" "}
             {venue.owner?.name ?? "Unknown"}
           </p>
           <div className="flex gap-4 flex-wrap">
-            <p className="text-small">
+            <p className="text-small ">
               Published: {formatCreatedDate(venue.created)}
             </p>
             <p className="text-small">
@@ -182,8 +185,8 @@ export function VenueDetailPage() {
           <p className="text-yellow-500 font-semibold">
             ⭐ {venue.rating > 0 ? `${venue.rating}` : "No reviews yet"}
           </p>
-          <p className="text-2xl font-bold">{venue.price} / night</p>
-          <p className="text-gray-700 text-center">
+          <p className="text-bodytext font-bold">{venue.price} / night</p>
+          <p className="text-gray-700 text-center text-bodytext">
             Max Guest Capacity:
             <br /> {venue.maxGuests}
           </p>
@@ -194,7 +197,10 @@ export function VenueDetailPage() {
           {user && user?.name !== venue.owner?.name && (
             <>
               <div className="w-full flex flex-col items-start gap-1">
-                <label htmlFor="guests" className="font-semibold text-gray-700">
+                <label
+                  htmlFor="guests"
+                  className="font-semibold text-gray-700 text-inputlabel"
+                >
                   Number of Guests
                 </label>
                 <input
@@ -218,7 +224,7 @@ export function VenueDetailPage() {
             </>
           )}
           {!user && (
-            <p className="text-sm text-muted text-center">
+            <p className="text-small text-muted text-center">
               Log in to book this venue.
             </p>
           )}

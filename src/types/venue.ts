@@ -35,3 +35,8 @@ export interface Venue {
 
   bookings?: Booking[];
 }
+
+export type VenueInput = Omit<
+  Venue,
+  "id" | "created" | "updated" | "owner" | "bookings"
+>;

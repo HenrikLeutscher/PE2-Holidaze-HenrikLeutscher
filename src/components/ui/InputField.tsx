@@ -9,6 +9,7 @@ export const InputField: React.FC<InputFieldProps> = ({
   onChange,
   placeholder,
   required,
+  autoComplete,
 }) => {
   return (
     <div className="mb-4">
@@ -24,6 +25,7 @@ export const InputField: React.FC<InputFieldProps> = ({
         placeholder={placeholder}
         required={required}
         className="input"
+        autoComplete={autoComplete}
       />
     </div>
   );

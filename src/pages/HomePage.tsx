@@ -47,7 +47,7 @@ export function HomePage() {
             onClick={() => navigate("/venues")}
           />
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
           {latestVenues.map((venue: any) => (
             <div key={venue.id}>
               <VenueCard venue={venue} />
@@ -64,7 +64,7 @@ export function HomePage() {
             onClick={() => navigate("/venues")}
           />
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
           {topVenues.map((venue: any) => (
             <div key={venue.id}>
               <VenueCard venue={venue} />
