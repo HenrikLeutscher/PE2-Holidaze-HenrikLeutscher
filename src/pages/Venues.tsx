@@ -13,29 +13,43 @@ export function VenuesPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
 
   const itemsPerPage = 24;
 
   useEffect(() => {
     document.title = "Venues | Holidaze";
     setIsLoading(true);
-    getVenues(currentPage, itemsPerPage)
+    getVenues(currentPage, itemsPerPage, sortOrder)
       .then(({ venues, totalCount }) => {
         setVenues(venues);
         setTotalPages(Math.ceil(totalCount / itemsPerPage));
       })
       .catch((err) => setError(err.message || "Failed to load venues"))
       .finally(() => setIsLoading(false));
-  }, [currentPage]);
+  }, [currentPage, sortOrder]);
 
   if (isLoading) return <Loading />;
   if (error)
-    return <div className="text-center text-red-600 pt-5">{error}</div>;
+    return <div className="text-center my-auto text-red-600 pt-5">{error}</div>;
 
   return (
     <div className="pt-5">
       <h2 className="text-center text-2xl font-bold">Venues</h2>
       <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+      <div className="flex justify-center py-4">
+        <select
+          value={sortOrder}
+          onChange={(e) => {
+            setSortOrder(e.target.value as "asc" | "desc");
+            setCurrentPage(1);
+          }}
+          className="border border-gray-300 rounded-lg px-3 py-2"
+        >
+          <option value="desc">Newest First</option>
+          <option value="asc">Oldest First</option>
+        </select>
+      </div>
       <p className="text-center text-small">
         Page {currentPage} of {totalPages}
       </p>
