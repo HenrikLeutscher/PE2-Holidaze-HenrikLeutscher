@@ -76,7 +76,7 @@ export function ProfilePage() {
 
   return (
     <div className="mx-auto w-[80%] my-auto container justify-center items-center flex flex-col gap-5 py-5">
-      <h1 className="font-bold">Profile Page</h1>
+      <h1 className="text-header1">Profile Page</h1>
       <div className="flex flex-col lg:flex-row items-start gap-10">
         {/* Profile Left Column */}
         <div className="flex top-0 flex-col items-center border-primary border-2 rounded-2xl w-full lg:w-1/3 py-8 gap-2 text-center">
