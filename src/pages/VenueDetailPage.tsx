@@ -185,7 +185,7 @@ export function VenueDetailPage() {
           <p className="text-yellow-500 font-semibold">
             ⭐ {venue.rating > 0 ? `${venue.rating}` : "No reviews yet"}
           </p>
-          <p className="text-bodytext font-bold">{venue.price} / night</p>
+          <p className="text-bodytext font-bold">${venue.price} / night</p>
           <p className="text-gray-700 text-center text-bodytext">
             Max Guest Capacity:
             <br /> {venue.maxGuests}
