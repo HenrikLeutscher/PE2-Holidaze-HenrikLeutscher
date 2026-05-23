@@ -46,8 +46,8 @@ export function VenuesPage() {
           }}
           className="border border-gray-300 rounded-lg px-3 py-2"
         >
-          <option value="desc">Newest First</option>
-          <option value="asc">Oldest First</option>
+          <option value="desc">Published: Newest - Oldest</option>
+          <option value="asc">Published: Oldest - Newest</option>
         </select>
       </div>
       <p className="text-center text-small">
