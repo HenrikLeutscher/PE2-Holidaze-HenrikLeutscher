@@ -1,4 +1,5 @@
 import { NavLink } from "react-router-dom";
+import holidazeLogo from "../assets/logo/holidaze.png";
 import {
   House,
   Compass,
@@ -24,7 +25,7 @@ export function Header() {
         <div>
           <NavLink to={"/"}>
             <img
-              src="../../src/assets/logo/holidaze.png"
+              src={holidazeLogo}
               alt="Holidaze Logo"
               className="w-[10vw] min-w-30"
             />

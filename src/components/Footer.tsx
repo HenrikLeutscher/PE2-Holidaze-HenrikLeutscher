@@ -1,4 +1,5 @@
 import { NavLink } from "react-router-dom";
+import holidazeLogo from "../assets/logo/holidaze.png";
 
 export function Footer() {
   return (
@@ -6,7 +7,7 @@ export function Footer() {
       <div className="flex justify-center mb-2">
         <NavLink to={"/"}>
           <img
-            src="../../src/assets/logo/holidaze.png"
+            src={holidazeLogo}
             alt="Holidaze Logo"
             className="w-[15vw] min-w-30"
           />
