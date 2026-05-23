@@ -60,7 +60,10 @@ export function SearchBar({ searchQuery, setSearchQuery }: searchBarProps) {
   }, []);
 
   return (
-    <div className="relative w-1/2 mx-auto" ref={dropdownRef}>
+    <div
+      className="relative w-full md:w-2/3 lg:w-1/2 mx-auto"
+      ref={dropdownRef}
+    >
       <input
         id="search-input"
         value={searchQuery}
@@ -94,7 +97,7 @@ export function SearchBar({ searchQuery, setSearchQuery }: searchBarProps) {
         hasSearched &&
         results.length === 0 &&
         !loading && (
-          <div className="absolute top-full left-0 w-full bg-white border border-gray-300 rounded-md mt-1 p-2 text-center">
+          <div className="absolute top-full left-0 w-full bg-white border border-gray-300 rounded-md mt-1 p-2 text-center z-50">
             No results could be found
           </div>
         )}
