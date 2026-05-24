@@ -37,6 +37,16 @@ export function VenueDetailPage() {
   }>({ start: null, end: null });
   const [guests, setGuests] = useState(1);
 
+  const address = venue?.location?.address?.trim();
+  const zip = venue?.location?.zip?.trim();
+  const city = venue?.location?.city?.trim();
+  const country = venue?.location?.country?.trim();
+  const continent = venue?.location?.continent?.trim();
+
+  const venueAddress = [address, zip, city, country, continent]
+    .filter(Boolean)
+    .join(", ");
+
   useEffect(() => {
     if (!id) {
       setIsLoading(false);
@@ -161,11 +171,14 @@ export function VenueDetailPage() {
         {/* Left column */}
         <div className="flex-1 flex flex-col gap-6 text-left">
           <h1 className="text-header1 font-bold">{venue.name}</h1>
-          <p className="text-gray-500 italic">
-            {venue.location.city ? venue.location.city + ", " : ""}
-            {venue.location.country} - Hosted by{" "}
-            {venue.owner?.name ?? "Unknown"}
-          </p>
+          <div>
+            {venueAddress && (
+              <p className="text-gray-500 italic">{venueAddress}</p>
+            )}
+            <p className="text-gray-500 italic">
+              - Hosted by {venue.owner?.name ?? "Unknown"}
+            </p>
+          </div>
           <div className="flex gap-4 flex-wrap">
             <p className="text-small ">
               Published: {formatCreatedDate(venue.created)}
