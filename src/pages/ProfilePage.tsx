@@ -38,6 +38,12 @@ export function ProfilePage() {
           },
         );
 
+        if (response.status === 403) {
+          throw new Error(
+            "Unauthorized access. Please ensure your API Token is valid.",
+          );
+        }
+
         if (!response.ok) {
           throw new Error(`Failed to fetch profile: ${response.status}`);
         }
@@ -68,7 +74,7 @@ export function ProfilePage() {
   }
 
   if (error) {
-    return <p className="text-red-500">{error}</p>;
+    return <p className="text-red-500 mx-auto my-auto text-header3">{error}</p>;
   }
 
   if (loading) return <Loading />;
@@ -76,7 +82,7 @@ export function ProfilePage() {
 
   return (
     <div className="mx-auto w-[80%] my-auto container justify-center items-center flex flex-col gap-5 py-5">
-      <h1 className="text-header1">Profile Page</h1>
+      <h1 className="text-header1">{profile?.name}'s Profile Page</h1>
       <div className="flex flex-col lg:flex-row items-start gap-10">
         {/* Profile Left Column */}
         <div className="flex top-0 flex-col items-center border-primary border-2 rounded-2xl w-full lg:w-1/3 py-8 gap-2 text-center">
