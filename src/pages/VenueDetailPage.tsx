@@ -144,9 +144,6 @@ export function VenueDetailPage() {
       return;
     }
     setShowDeleteModal(true);
-    setTimeout(() => {
-      navigate("/venues");
-    }, 2000);
   };
 
   const confirmDelete = async () => {
@@ -157,6 +154,9 @@ export function VenueDetailPage() {
     try {
       await deleteVenue(venue.id, token);
       setPopup({ message: "Venue deleted successfully!", type: "success" });
+      setTimeout(() => {
+        navigate("/venues");
+      }, 2000);
     } catch (error) {
       setPopup({ message: getErrorMessages(error), type: "error" });
     } finally {
