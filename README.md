@@ -1,5 +1,7 @@
 # PE2-Holidaze-HenrikLeutscher
 
+<img width="1920" height="1080" alt="Holidaze" src="https://github.com/user-attachments/assets/dfa0aafc-d4f2-4fde-bb5c-551579d27264" />
+
 - [Description](#description)
 - [Features](#features)
 - [Venue Manager Features](#venue-manager-features)
